@@ -1,28 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div style="text-align: center">
+      <h1 style="font-size: 30pt; margin: 0;">Kintegra live users</h1>
+      <p style="font-size: 15pt; margin-top: 0">Usuários online no Kintegra neste momento</p>
+    </div>
+    <logged-users-count :users-logged="usersLogged"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import io from 'socket.io-client'
+import LoggedUsersCount from './components/LoggedUsersCount'
+
+const socket = io(process.env.VUE_APP_SOCKET_SERVER_URL)
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    LoggedUsersCount
+  },
+  data () {
+    return {
+      usersLogged: []
+    }
+  },
+  created () {
+    this.connectOnSocket()
+  },
+  methods: {
+    connectOnSocket () {
+      socket.on('Logados', data => {
+        this.usersLogged = data
+      })
+    }
   }
 }
 </script>
-
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
