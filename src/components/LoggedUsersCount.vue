@@ -50,6 +50,7 @@ export default {
   justify-content: space-evenly;
   .sides {
     flex: 1;
+    align-items: center;
     .number {
       font-size: 50pt;
     }
@@ -61,6 +62,20 @@ export default {
     flex: 1;
     font-size: 75pt;
     font-weight: bold;
+  }
+}
+
+@media (max-width: 768px) {
+  .sides {
+    .number {
+      font-size: 35pt !important;
+    }
+    .label {
+      font-size: 12pt !important;
+    }
+  }
+  .total {
+    font-size: 45pt !important;
   }
 }
 </style>
