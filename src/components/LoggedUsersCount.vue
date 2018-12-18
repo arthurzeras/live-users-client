@@ -5,7 +5,7 @@
       <div class="label">Cliente</div>
     </div>
     <div class="total">
-      {{ usersLogged.length }}
+      {{ totalClientesLogged + totalContabilidadesLogged }}
     </div>
     <div class="sides">
       <div class="number">{{ totalContabilidadesLogged }}</div>
@@ -16,18 +16,25 @@
 
 <script>
 export default {
-  props: {
-    usersLogged: {
-      type: Array,
-      required: true
-    }
+  name: 'LoggedUsersCount',
+  data: () => ({ list: [] }),
+  created () {
+    this.getData()
   },
   computed: {
     totalClientesLogged () {
-      return this.usersLogged.filter(u => u.level === 'CLI').length
+      return Object.keys(this.list).filter(i => i.includes('cliente')).length
     },
     totalContabilidadesLogged () {
-      return this.usersLogged.filter(u => u.level === 'CON').length
+      return Object.keys(this.list).filter(i => i.includes('contador')).length
+    }
+  },
+  methods: {
+    getData () {
+      const database = this.$firebase.database().ref()
+      database.on('value', snapshot => {
+        this.list = snapshot.val() || []
+      })
     }
   }
 }
