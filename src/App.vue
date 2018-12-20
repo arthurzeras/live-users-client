@@ -31,7 +31,7 @@ export default {
         collectionID = 2327071
       }
 
-      const BG_URL = `https://source.unsplash.com/collection/${collectionID}/1920x1080`
+      const BG_URL = `https://source.unsplash.com/collection/${collectionID}`
 
       this.$http.get(BG_URL, { responseType: 'blob' })
         .then(res => {
