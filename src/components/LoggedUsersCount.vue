@@ -81,4 +81,18 @@ export default {
     font-size: 45pt !important;
   }
 }
+
+@media (min-width: 1920px) {
+  .sides {
+    .number {
+      font-size: 70pt !important;
+    }
+    .label {
+      font-size: 30pt !important;
+    }
+  }
+  .total {
+    font-size: 85pt !important;
+  }
+}
 </style>
