@@ -5,7 +5,7 @@
         <h1 class="title">Kintegra live users</h1>
         <p class="subtitle">Usuários online no Kintegra neste momento</p>
       </div>
-      <logged-users-count />
+      <logged-users-count @total="total = $event" />
     </div>
   </div>
 </template>
@@ -18,13 +18,22 @@ export default {
   components: {
     LoggedUsersCount
   },
+  data: () => ({ total: 0 }),
   mounted () {
     this.alterarBackground()
     setInterval(() => this.alterarBackground(), 20000)
   },
   methods: {
     alterarBackground () {
-      this.$http.get('https://source.unsplash.com/collection/406202/1920x1080', { responseType: 'blob' })
+      let collectionID = 406202
+
+      if (this.total >= 100) {
+        collectionID = 2327071
+      }
+
+      const BG_URL = `https://source.unsplash.com/collection/${collectionID}/1920x1080`
+
+      this.$http.get(BG_URL, { responseType: 'blob' })
         .then(res => {
           const reader = new FileReader()
           reader.readAsDataURL(res.data)

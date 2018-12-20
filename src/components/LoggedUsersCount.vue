@@ -34,6 +34,7 @@ export default {
       const database = this.$firebase.database().ref()
       database.on('value', snapshot => {
         this.list = snapshot.val() || []
+        this.$emit('total', this.totalClientesLogged + this.totalContabilidadesLogged)
       })
     },
     getLength (type) {
