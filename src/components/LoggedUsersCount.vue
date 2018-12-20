@@ -23,10 +23,10 @@ export default {
   },
   computed: {
     totalClientesLogged () {
-      return Object.keys(this.list).filter(i => i.includes('cliente')).length
+      return this.getLength('cliente')
     },
     totalContabilidadesLogged () {
-      return Object.keys(this.list).filter(i => i.includes('contador')).length
+      return this.getLength('contador')
     }
   },
   methods: {
@@ -35,6 +35,9 @@ export default {
       database.on('value', snapshot => {
         this.list = snapshot.val() || []
       })
+    },
+    getLength (type) {
+      return Object.keys(this.list).filter(i => i.includes(type) && i.includes('prod')).length
     }
   }
 }
