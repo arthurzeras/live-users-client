@@ -29,13 +29,12 @@ export default {
       573226, // retro
       1752784, // nerd
       1891993, // space
-      2327071, // women
       590961 // programming
     ]
   }),
   mounted () {
     this.alterarBackground()
-    setInterval(() => this.alterarBackground(), 10000)
+    setInterval(() => this.alterarBackground(), 20000)
   },
   methods: {
     alterarBackground () {
