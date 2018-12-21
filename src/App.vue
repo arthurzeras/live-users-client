@@ -7,15 +7,19 @@
       </div>
       <logged-users-count @total="total = $event" />
     </div>
+
+    <rocket :count="total"/>
   </div>
 </template>
 
 <script>
+import Rocket from './components/Rocket'
 import LoggedUsersCount from './components/LoggedUsersCount'
 
 export default {
   name: 'app',
   components: {
+    Rocket,
     LoggedUsersCount
   },
   data: () => ({ total: 0 }),
