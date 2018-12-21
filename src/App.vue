@@ -22,16 +22,26 @@ export default {
     Rocket,
     LoggedUsersCount
   },
-  data: () => ({ total: 0 }),
+  data: () => ({
+    total: 0,
+    collections: [
+      406202, // tech
+      573226, // retro
+      1752784, // nerd
+      1891993, // space
+      2327071, // women
+      590961 // programming
+    ]
+  }),
   mounted () {
     this.alterarBackground()
-    setInterval(() => this.alterarBackground(), 20000)
+    setInterval(() => this.alterarBackground(), 10000)
   },
   methods: {
     alterarBackground () {
-      let collectionID = 406202
+      let collectionID = this.collections[Math.floor(Math.random() * this.collections.length)]
 
-      if (this.total >= 100) {
+      if (this.total >= 500) {
         collectionID = 2327071
       }
 

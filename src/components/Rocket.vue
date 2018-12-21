@@ -26,7 +26,7 @@ export default {
     },
     showRocket (nv) {
       if (nv) {
-        setTimeout(() => { this.showRocket = false }, 10000)
+        setTimeout(() => { this.showRocket = false }, 9000)
       }
     }
   }
