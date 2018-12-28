@@ -17,7 +17,7 @@
 <script>
 export default {
   name: 'LoggedUsersCount',
-  data: () => ({ list: [] }),
+  data: () => ({ list: [], lastAdded: null }),
   created () {
     this.getData()
   },
@@ -32,13 +32,33 @@ export default {
   methods: {
     getData () {
       const database = this.$firebase.database().ref()
+
+      database.on('child_added', snapshot => {
+        this.lastAdded = snapshot.val()
+      })
+
       database.on('value', snapshot => {
         this.list = snapshot.val() || []
+        this.startTimeoutToDelete()
         this.$emit('total', this.totalClientesLogged + this.totalContabilidadesLogged)
       })
     },
     getLength (type) {
       return Object.keys(this.list).filter(i => i.includes(type) && i.includes('prod')).length
+    },
+    startTimeoutToDelete () {
+      if (this.lastAdded) {
+        const idLastLogged = Object.keys(this.list)
+          .filter(k => this.list[k].createdAt === this.lastAdded.createdAt)
+
+        setTimeout(() => {
+          if (idLastLogged.length) {
+            this.$firebase.database().ref(idLastLogged[0]).remove()
+          }
+
+          this.lastAdded = null
+        }, 7.2e+6)
+      }
     }
   }
 }
