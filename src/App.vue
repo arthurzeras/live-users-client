@@ -25,11 +25,12 @@ export default {
   data: () => ({
     total: 0,
     collections: [
-      406202, // tech
-      573226, // retro
-      1752784, // nerd
-      1891993, // space
-      590961 // programming
+      406202, // https://unsplash.com/collections/406202/galaxy-af
+      789734, // https://unsplash.com/collections/789734/abstract
+      1752784, // https://unsplash.com/collections/1752784/nerd
+      1891993, // https://unsplash.com/collections/1891993/flatlay-tech-edition
+      590961, // https://unsplash.com/collections/590961/coding-programming
+      2411320 // https://unsplash.com/collections/2411320/trend-extreme-neon
     ]
   }),
   mounted () {
@@ -38,12 +39,7 @@ export default {
   },
   methods: {
     alterarBackground () {
-      let collectionID = this.collections[Math.floor(Math.random() * this.collections.length)]
-
-      if (this.total >= 500) {
-        collectionID = 2327071
-      }
-
+      const collectionID = this.collections[Math.floor(Math.random() * this.collections.length)]
       const BG_URL = `https://source.unsplash.com/collection/${collectionID}`
 
       this.$http.get(BG_URL, { responseType: 'blob' })
