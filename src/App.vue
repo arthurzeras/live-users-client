@@ -26,11 +26,11 @@ export default {
     total: 0,
     collections: [
       406202, // https://unsplash.com/collections/406202/galaxy-af
-      789734, // https://unsplash.com/collections/789734/abstract
-      1752784, // https://unsplash.com/collections/1752784/nerd
-      1891993, // https://unsplash.com/collections/1891993/flatlay-tech-edition
-      590961, // https://unsplash.com/collections/590961/coding-programming
-      2411320 // https://unsplash.com/collections/2411320/trend-extreme-neon
+      789734 // https://unsplash.com/collections/789734/abstract
+    //   1752784, // https://unsplash.com/collections/1752784/nerd
+    //   1891993, // https://unsplash.com/collections/1891993/flatlay-tech-edition
+    //   590961, // https://unsplash.com/collections/590961/coding-programming
+    //   2411320 // https://unsplash.com/collections/2411320/trend-extreme-neon
     ]
   }),
   mounted () {
