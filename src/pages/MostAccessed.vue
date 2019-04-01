@@ -5,8 +5,27 @@
 </template>
 
 <script>
-export default {
+import { firebaseApp2 as Firebase } from '@/firebase'
 
+export default {
+  name: 'MostAccessed',
+  data: () => ({
+    items: []
+  }),
+  created () {
+    this.getData()
+  },
+  methods: {
+    getData () {
+      Firebase.database().ref().on('value', data => {
+        const items = data.val()
+        this.items = Object
+          .keys(items)
+          .map(item => items[item])
+          .filter(item => item.env === 'prod')
+      })
+    }
+  }
 }
 </script>
 
