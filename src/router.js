@@ -9,8 +9,16 @@ export default new Router({
       path: '/',
       name: 'home',
       component: () => import(
-        /* webpackChunkName: "LoggedUsers" */
+        /* webpackChunkName: "Home" */
         './pages/Home'
+      )
+    },
+    {
+      name: 'mais-acessadas',
+      path: '/mais-acessadas',
+      component: () => import(
+        /* webpackChunkName: "MostAccessed" */
+        './pages/MostAccessed'
       )
     }
   ]

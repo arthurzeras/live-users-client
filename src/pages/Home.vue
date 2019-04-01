@@ -15,6 +15,7 @@ import Rocket from '../components/Rocket'
 import LoggedUsersCount from '../components/LoggedUsersCount'
 
 export default {
+  name: 'Home',
   components: {
     Rocket,
     LoggedUsersCount
@@ -56,6 +57,12 @@ export default {
 <style scoped lang="scss">
 .home {
   width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, .6);
   .title {
     margin: 0;
     font-size: 45pt;

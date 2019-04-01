@@ -8,9 +8,6 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'App'
 }
 </script>
-
-<style lang="scss" scoped>
-</style>
