@@ -8,17 +8,25 @@ export default new Router({
     {
       path: '/',
       name: 'home',
+      meta: {
+        title: 'Home',
+        icon: 'fa fa-home'
+      },
       component: () => import(
         /* webpackChunkName: "Home" */
         './pages/Home'
       )
     },
     {
-      name: 'mais-acessadas',
-      path: '/mais-acessadas',
+      name: 'stats',
+      path: '/estatisticas',
+      meta: {
+        title: 'Estatísticas',
+        icon: 'fa fa-chart-line'
+      },
       component: () => import(
-        /* webpackChunkName: "MostAccessed" */
-        './pages/most-accessed/MostAccessed'
+        /* webpackChunkName: "Stats" */
+        './pages/stats/Stats'
       )
     }
   ]

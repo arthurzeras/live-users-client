@@ -135,8 +135,8 @@ export default {
 <style lang="scss" scoped>
 .most-accessed {
   padding: 15px;
-  height: 100vh;
   overflow: hidden auto;
+  height: calc(100vh - 71px);
   background-color: #E7E7E7;
   .info-header {
     text-align: center;
