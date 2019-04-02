@@ -12,7 +12,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 export default {
   props: {
     data: { type: Object, required: true },
-    tipo: { type: String, required: true }
+    type: { type: String, required: true }
   },
   watch: {
     data: {
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     referenceName () {
-      return this.tipo === 'CLI'
+      return this.type === 'CLI'
         ? 'top10_CLI'
         : 'top10_CON'
     }
@@ -50,7 +50,7 @@ export default {
               datasets: [
                 {
                   data: this.data.data,
-                  backgroundColor: this.tipo === 'CLI'
+                  backgroundColor: this.type === 'CLI'
                     ? '#0066FE'
                     : '#D72232'
                 }

@@ -12,7 +12,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 export default {
   props: {
     data: { type: Array, required: true },
-    tipo: { type: String, required: true }
+    type: { type: String, required: true }
   },
   mounted () {
     Chart.plugins.unregister(ChartDataLabels)
@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     referenceName () {
-      return this.tipo === 'CLI'
+      return this.type === 'CLI'
         ? 'schedule_CLI'
         : 'schedule_CON'
     }
@@ -55,10 +55,10 @@ export default {
               datasets: [
                 {
                   data: this.data,
-                  borderColor: this.tipo === 'CLI'
+                  borderColor: this.type === 'CLI'
                     ? '#0066FE'
                     : '#D72232',
-                  backgroundColor: this.tipo === 'CLI'
+                  backgroundColor: this.type === 'CLI'
                     ? '#0066FE12'
                     : '#D7223212'
                 }

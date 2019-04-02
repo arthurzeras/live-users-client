@@ -1,14 +1,19 @@
 <template>
   <div class="most-accessed">
+    <div class="row info-header">
+      <div class="col-6"><h2>Cliente</h2></div>
+      <div class="col-6"><h2>Contabilidade</h2></div>
+    </div>
+
     <div class="row">
       <div class="col-6">
         <card-box title="TOP 10 Páginas mais acessadas">
-          <top-10 tipo="CLI" :data="chartTop10.CLI"/>
+          <top-10 type="CLI" :data="chartTop10.CLI"/>
         </card-box>
       </div>
       <div class="col-6">
         <card-box title="TOP 10 Páginas mais acessadas">
-          <top-10 tipo="CON" :data="chartTop10.CON"/>
+          <top-10 type="CON" :data="chartTop10.CON"/>
         </card-box>
       </div>
     </div>
@@ -19,7 +24,7 @@
           title="Frequência de uso (Horário)"
           :subtitle="frequencies.CLI.highest"
         >
-          <schedule tipo="CLI" :data="frequencies.CLI.totals"/>
+          <schedule type="CLI" :data="frequencies.CLI.totals"/>
         </card-box>
       </div>
       <div class="col-6">
@@ -27,7 +32,7 @@
           title="Frequência de uso (Horário)"
           :subtitle="frequencies.CON.highest"
         >
-          <schedule tipo="CON" :data="frequencies.CON.totals"/>
+          <schedule type="CON" :data="frequencies.CON.totals"/>
         </card-box>
       </div>
     </div>
@@ -133,5 +138,10 @@ export default {
   height: 100vh;
   overflow: hidden auto;
   background-color: #E7E7E7;
+  .info-header {
+    text-align: center;
+    .col-6:first-child h2 { color: #0066FE }
+    .col-6:last-child h2 { color: #D72232 }
+  }
 }
 </style>
