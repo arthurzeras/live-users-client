@@ -1,11 +1,17 @@
 <template>
   <div class="most-accessed">
-    <card-box
-      height="370px"
-      title="TOP 10 Páginas mais acessadas"
-    >
-      <top-10 :data="charts.top10"/>
-    </card-box>
+    <div class="row">
+      <div class="col-6">
+        <card-box title="TOP 10 Páginas mais acessadas" key="1">
+          <top-10 tipo="CLI" :data="chartTop10.CLI"/>
+        </card-box>
+      </div>
+      <div class="col-6">
+        <card-box title="TOP 10 Páginas mais acessadas" key="2">
+          <top-10 tipo="CON" :data="chartTop10.CON"/>
+        </card-box>
+      </div>
+    </div>
 
     <div class="row">
       <div class="col-6">
@@ -13,7 +19,7 @@
           title="Frequência de uso (Horário)"
           :subtitle="frequencies.schedule.highest"
         >
-          <schedule :data="frequencies.schedule.totals"/>
+          <schedule tipo="CLI" :data="frequencies.schedule.totals"/>
         </card-box>
       </div>
     </div>
@@ -45,11 +51,19 @@ export default {
   },
   computed: {
     pagesMostAccessed () {
-      let counts = countBy(this.items, i => i.pagina)
-      counts = Object.keys(counts)
-        .map(i => ({ page: i, total: counts[i] }))
+      const orderItems = type => {
+        const items = this.items.filter(i => i.tipo === type)
+        let counts = countBy(items, i => i.pagina)
+        counts = Object.keys(counts)
+          .map(i => ({ page: i, total: counts[i] }))
 
-      return orderBy(counts, i => i.total, 'desc')
+        return orderBy(counts, i => i.total, 'desc')
+      }
+
+      return {
+        CLI: orderItems('cliente'),
+        CON: orderItems('contabilidade')
+      }
     },
     frequencies () {
       const payload = {
@@ -73,11 +87,21 @@ export default {
 
       return payload
     },
-    charts () {
+    chartTop10 () {
+      const filterItems = (type, param) => (
+        this.pagesMostAccessed[type]
+          .map(i => i[param])
+          .splice(0, 10)
+      )
+
       return {
-        top10: {
-          data: this.pagesMostAccessed.map(i => i.total).splice(0, 10),
-          labels: this.pagesMostAccessed.map(i => i.page).splice(0, 10)
+        CLI: {
+          data: filterItems('CLI', 'total'),
+          labels: filterItems('CLI', 'page')
+        },
+        CON: {
+          data: filterItems('CON', 'total'),
+          labels: filterItems('CON', 'page')
         }
       }
     }

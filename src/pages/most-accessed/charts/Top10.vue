@@ -1,6 +1,6 @@
 <template>
-  <div id="chart-top10">
-    <canvas ref="top10"/>
+  <div class="chart-top10">
+    <canvas :ref="referenceName"/>
   </div>
 </template>
 
@@ -11,7 +11,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 export default {
   props: {
-    data: { type: Object, required: true }
+    data: { type: Object, required: true },
+    tipo: { type: String, required: true }
   },
   watch: {
     data: {
@@ -23,17 +24,24 @@ export default {
       }
     }
   },
+  computed: {
+    referenceName () {
+      return this.tipo === 'CLI'
+        ? 'top10_CLI'
+        : 'top10_CON'
+    }
+  },
   methods: {
     mountChart () {
-      if (!this.$refs.top10) {
+      if (!this.$refs[this.referenceName]) {
         setTimeout(() => {
           this.mountChart()
         }, 500)
       } else {
-        if (window.charts.top10) {
-          window.charts.top10.data.labels = this.data.labels
-          window.charts.top10.data.datasets[0].data = this.data.data
-          window.charts.top10.update()
+        if (window.charts[this.referenceName]) {
+          window.charts[this.referenceName].data.labels = this.data.labels
+          window.charts[this.referenceName].data.datasets[0].data = this.data.data
+          window.charts[this.referenceName].update()
         } else {
           const config = {
             type: 'horizontalBar',
@@ -42,7 +50,9 @@ export default {
               datasets: [
                 {
                   data: this.data.data,
-                  backgroundColor: '#06f'
+                  backgroundColor: this.tipo === 'CLI'
+                    ? '#0066FE'
+                    : '#D72232'
                 }
               ]
             },
@@ -59,9 +69,9 @@ export default {
             }
           }
 
-          const ctx = this.$refs.top10.getContext('2d')
+          const ctx = this.$refs[this.referenceName].getContext('2d')
 
-          window.charts.top10 = new Chart(ctx, config)
+          window.charts[this.referenceName] = new Chart(ctx, config)
         }
       }
     }
@@ -70,7 +80,7 @@ export default {
 </script>
 
 <style scoped>
-  #chart-top10 {
+  .chart-top10 {
     height: 280px;
     position: relative;
   }

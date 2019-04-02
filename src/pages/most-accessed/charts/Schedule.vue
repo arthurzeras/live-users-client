@@ -11,7 +11,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 export default {
   props: {
-    data: { type: Array, required: true }
+    data: { type: Array, required: true },
+    tipo: { type: String, required: true }
   },
   mounted () {
     Chart.plugins.unregister(ChartDataLabels)
@@ -47,8 +48,12 @@ export default {
               datasets: [
                 {
                   data: this.data,
-                  borderColor: '#D72232',
-                  backgroundColor: '#D7223212'
+                  borderColor: this.tipo === 'CLI'
+                    ? '#0066FE'
+                    : '#D72232',
+                  backgroundColor: this.tipo === 'CLI'
+                    ? '#0066FE12'
+                    : '#D7223212'
                 }
               ]
             },
