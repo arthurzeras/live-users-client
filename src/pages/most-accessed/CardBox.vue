@@ -1,5 +1,5 @@
 <template>
-  <div class="card-box">
+  <div class="card-box" :style="{height}">
     <div class="card-box-title">
       <h1>{{ title }}</h1>
     </div>
@@ -12,6 +12,7 @@
 <script>
 export default {
   props: {
+    height: { type: String },
     title: { type: String, required: true }
   }
 }
@@ -31,6 +32,10 @@ export default {
       font-size: 1.2rem;
       font-weight: bold;
     }
+  }
+  .card-box-body {
+    height: 100%;
+    position: relative;
   }
 }
 </style>
