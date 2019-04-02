@@ -33,7 +33,10 @@ export default {
   }),
   mounted () {
     this.alterarBackground()
-    setInterval(() => this.alterarBackground(), 20000)
+    window.backgroundInterval = setInterval(
+      () => this.alterarBackground(),
+      20000
+    )
   },
   methods: {
     alterarBackground () {
@@ -50,6 +53,10 @@ export default {
           }
         })
     }
+  },
+  beforeDestroy () {
+    document.querySelector('#app').style.background = ''
+    clearInterval(window.backgroundInterval)
   }
 }
 </script>
