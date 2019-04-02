@@ -1,6 +1,6 @@
 <template>
-  <div id="chart-schedule">
-    <canvas ref="schedule"/>
+  <div class="chart-schedule">
+    <canvas :ref="referenceName"/>
   </div>
 </template>
 
@@ -27,19 +27,26 @@ export default {
       }
     }
   },
+  computed: {
+    referenceName () {
+      return this.tipo === 'CLI'
+        ? 'schedule_CLI'
+        : 'schedule_CON'
+    }
+  },
   methods: {
     mountChart () {
-      if (!this.$refs.schedule) {
+      if (!this.$refs[this.referenceName]) {
         setTimeout(() => {
           this.mountChart()
         }, 500)
       } else {
         const labels = Array.from({ length: 24 }, (a, i) => i)
 
-        if (window.charts.schedule) {
-          window.charts.schedule.data.labels = labels
-          window.charts.schedule.data.datasets[0].data = this.data
-          window.charts.schedule.update()
+        if (window.charts[this.referenceName]) {
+          window.charts[this.referenceName].data.labels = labels
+          window.charts[this.referenceName].data.datasets[0].data = this.data
+          window.charts[this.referenceName].update()
         } else {
           const config = {
             type: 'line',
@@ -68,8 +75,8 @@ export default {
             }
           }
 
-          const ctx = this.$refs.schedule.getContext('2d')
-          window.charts.schedule = new Chart(ctx, config)
+          const ctx = this.$refs[this.referenceName].getContext('2d')
+          window.charts[this.referenceName] = new Chart(ctx, config)
         }
       }
     }
@@ -78,7 +85,7 @@ export default {
 </script>
 
 <style>
-#chart-schedule {
+.chart-schedule {
   position: relative;
 }
 </style>

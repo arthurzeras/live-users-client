@@ -2,12 +2,12 @@
   <div class="most-accessed">
     <div class="row">
       <div class="col-6">
-        <card-box title="TOP 10 Páginas mais acessadas" key="1">
+        <card-box title="TOP 10 Páginas mais acessadas">
           <top-10 tipo="CLI" :data="chartTop10.CLI"/>
         </card-box>
       </div>
       <div class="col-6">
-        <card-box title="TOP 10 Páginas mais acessadas" key="2">
+        <card-box title="TOP 10 Páginas mais acessadas">
           <top-10 tipo="CON" :data="chartTop10.CON"/>
         </card-box>
       </div>
@@ -17,9 +17,17 @@
       <div class="col-6">
         <card-box
           title="Frequência de uso (Horário)"
-          :subtitle="frequencies.schedule.highest"
+          :subtitle="frequencies.CLI.highest"
         >
-          <schedule tipo="CLI" :data="frequencies.schedule.totals"/>
+          <schedule tipo="CLI" :data="frequencies.CLI.totals"/>
+        </card-box>
+      </div>
+      <div class="col-6">
+        <card-box
+          title="Frequência de uso (Horário)"
+          :subtitle="frequencies.CON.highest"
+        >
+          <schedule tipo="CON" :data="frequencies.CON.totals"/>
         </card-box>
       </div>
     </div>
@@ -66,26 +74,25 @@ export default {
       }
     },
     frequencies () {
-      const payload = {
-        schedule: {
-          totals: [],
-          highest: ''
-        }
-      }
+      const createFrequency = type => {
+        const items = this.items.filter(i => i.tipo === type)
+        const counts = countBy(items, i => new Date(i.createdAt).getHours())
+        const totals = Array.from({ length: 24 }, (a, hour) => counts[hour] || 0)
+        let highest = orderBy(counts, i => i, 'desc')[0]
 
-      if (this.items.length) {
-        const counts = countBy(this.items, i => new Date(i.createdAt).getHours())
-        payload.schedule.totals = Array.from({ length: 24 }, (a, hour) => counts[hour] || 0)
-
-        const highest = orderBy(counts, i => i, 'desc')[0]
-        payload.schedule.highest =
+        highest =
           'A maior frequência foi entre ' +
-          `${payload.schedule.totals.indexOf(highest)}:00 e ` +
-          `${payload.schedule.totals.indexOf(highest) + 1}:00 ` +
+          `${totals.indexOf(highest)}:00 e ` +
+          `${totals.indexOf(highest) + 1}:00 ` +
           `com um total de ${highest} acessos.`
+
+        return { totals, highest }
       }
 
-      return payload
+      return {
+        CLI: createFrequency('cliente'),
+        CON: createFrequency('contabilidade')
+      }
     },
     chartTop10 () {
       const filterItems = (type, param) => (
