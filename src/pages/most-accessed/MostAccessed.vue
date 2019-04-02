@@ -1,7 +1,7 @@
 <template>
   <div class="most-accessed">
     <card-box
-      height="350px"
+      height="370px"
       title="TOP 10 Páginas mais acessadas"
     >
       <top-10 :data="charts.top10"/>
@@ -99,15 +99,8 @@ export default {
 <style lang="scss" scoped>
 .most-accessed {
   padding: 15px;
+  height: 100vh;
   overflow: hidden auto;
-  height: calc(100vh - 30px);
   background-color: #E7E7E7;
-  .row {
-    display: flex;
-    .col-6 {
-      width: 50%;
-      flex: 0 0 50%;
-    }
-  }
 }
 </style>

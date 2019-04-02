@@ -1,11 +1,12 @@
 <template>
   <div id="chart-top10">
-    <canvas ref="top10"></canvas>
+    <canvas ref="top10"/>
   </div>
 </template>
 
 <script>
 import Chart from 'chart.js'
+import { chartOptions } from './utils'
 
 export default {
   props: {
@@ -23,53 +24,34 @@ export default {
   },
   methods: {
     mountChart () {
-      if (window.charts.top10) {
-        window.charts.top10.destroy()
-      }
-
       if (!this.$refs.top10) {
         setTimeout(() => {
           this.mountChart()
         }, 500)
       } else {
-        const config = {
-          type: 'horizontalBar',
-          data: {
-            labels: this.data.labels,
-            datasets: [
-              {
-                data: this.data.data,
-                backgroundColor: '#06f'
-              }
-            ]
-          },
-          options: {
-            legend: false,
-            maintainAspectRatio: false,
-            scales: {
-              xAxes: [
+        if (window.charts.top10) {
+          window.charts.top10.data.labels = this.data.labels
+          window.charts.top10.data.datasets[0].data = this.data.data
+          window.charts.top10.update()
+        } else {
+          const config = {
+            data: {
+              labels: this.data.labels,
+              datasets: [
                 {
-                  gridLines: {
-                    display: false,
-                    drawBorder: false
-                  }
-                }
-              ],
-              yAxes: [
-                {
-                  gridLines: {
-                    display: false,
-                    drawBorder: false
-                  }
+                  data: this.data.data,
+                  backgroundColor: '#06f'
                 }
               ]
-            }
+            },
+            type: 'horizontalBar',
+            options: chartOptions
           }
+
+          const ctx = this.$refs.top10.getContext('2d')
+
+          window.charts.top10 = new Chart(ctx, config)
         }
-
-        const ctx = this.$refs.top10.getContext('2d')
-
-        window.charts.top10 = new Chart(ctx, config)
       }
     }
   }
@@ -78,7 +60,7 @@ export default {
 
 <style scoped>
   #chart-top10 {
-    height: 300px;
+    height: 280px;
     position: relative;
   }
 </style>
