@@ -52,9 +52,6 @@ export default {
                   gridLines: {
                     display: false,
                     drawBorder: false
-                  },
-                  ticks: {
-                    max: this.data.data[0]
                   }
                 }
               ],

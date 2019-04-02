@@ -47,7 +47,6 @@ export default {
     pagesMostAccessed () {
       let counts = countBy(this.items, i => i.pagina)
       counts = Object.keys(counts)
-        .filter(i => i !== '/.')
         .map(i => ({ page: i, total: counts[i] }))
 
       return orderBy(counts, i => i.total, 'desc')
