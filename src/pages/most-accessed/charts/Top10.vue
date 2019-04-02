@@ -7,6 +7,7 @@
 <script>
 import Chart from 'chart.js'
 import { chartOptions } from './utils'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 export default {
   props: {
@@ -35,6 +36,7 @@ export default {
           window.charts.top10.update()
         } else {
           const config = {
+            type: 'horizontalBar',
             data: {
               labels: this.data.labels,
               datasets: [
@@ -44,8 +46,17 @@ export default {
                 }
               ]
             },
-            type: 'horizontalBar',
-            options: chartOptions
+            plugins: [ChartDataLabels],
+            options: {
+              ...chartOptions,
+              plugins: {
+                datalabels: {
+                  align: 'end',
+                  anchor: 'end',
+                  color: '#333'
+                }
+              }
+            }
           }
 
           const ctx = this.$refs.top10.getContext('2d')

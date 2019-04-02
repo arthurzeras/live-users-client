@@ -7,10 +7,14 @@
 <script>
 import Chart from 'chart.js'
 import { chartOptions } from './utils'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 export default {
   props: {
     data: { type: Array, required: true }
+  },
+  mounted () {
+    Chart.plugins.unregister(ChartDataLabels)
   },
   watch: {
     data: {
