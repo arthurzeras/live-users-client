@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import countBy from 'lodash.countby'
+import orderBy from 'lodash.orderby'
 import { firebaseApp2 as Firebase } from '@/firebase'
 
 export default {
@@ -14,6 +16,16 @@ export default {
   }),
   created () {
     this.getData()
+  },
+  computed: {
+    pagesMostAccessed () {
+      let counts = countBy(this.items, i => i.pagina)
+      counts = Object.keys(counts)
+        .filter(i => i !== '/.')
+        .map(i => ({ page: i, total: counts[i] }))
+
+      return orderBy(counts, i => i.total, 'desc')
+    }
   },
   methods: {
     getData () {
