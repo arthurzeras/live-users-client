@@ -1,6 +1,6 @@
 <template>
-  <div id="chart-top10">
-    <canvas ref="top10"></canvas>
+  <div id="chart-schedule">
+    <canvas ref="schedule"/>
   </div>
 </template>
 
@@ -9,13 +9,13 @@ import Chart from 'chart.js'
 
 export default {
   props: {
-    data: { type: Object, required: true }
+    data: { type: Array, required: true }
   },
   watch: {
     data: {
       immediate: true,
       handler (nv) {
-        if (Object.keys(nv).length) {
+        if (nv.length) {
           this.mountChart()
         }
       }
@@ -23,38 +23,35 @@ export default {
   },
   methods: {
     mountChart () {
-      if (window.charts.top10) {
-        window.charts.top10.destroy()
+      if (window.charts.schedule) {
+        window.charts.schedule.destroy()
       }
 
-      if (!this.$refs.top10) {
+      if (!this.$refs.schedule) {
         setTimeout(() => {
           this.mountChart()
         }, 500)
       } else {
         const config = {
-          type: 'horizontalBar',
+          type: 'line',
           data: {
-            labels: this.data.labels,
+            labels: Array.from({ length: 24 }, (a, i) => i),
             datasets: [
               {
-                data: this.data.data,
-                backgroundColor: '#06f'
+                data: this.data,
+                borderColor: '#D72232',
+                backgroundColor: '#D7223212'
               }
             ]
           },
           options: {
             legend: false,
-            maintainAspectRatio: false,
             scales: {
               xAxes: [
                 {
                   gridLines: {
                     display: false,
                     drawBorder: false
-                  },
-                  ticks: {
-                    max: this.data.data[0]
                   }
                 }
               ],
@@ -66,22 +63,26 @@ export default {
                   }
                 }
               ]
+            },
+            tooltips: {
+              callbacks: {
+                title: item => `${item[0].label} hrs`,
+                label: item => `${item.value} acessos`
+              }
             }
           }
         }
 
-        const ctx = this.$refs.top10.getContext('2d')
-
-        window.charts.top10 = new Chart(ctx, config)
+        const ctx = this.$refs.schedule.getContext('2d')
+        window.charts.schedule = new Chart(ctx, config)
       }
     }
   }
 }
 </script>
 
-<style scoped>
-  #chart-top10 {
-    height: 300px;
-    position: relative;
-  }
+<style>
+#chart-schedule {
+  position: relative;
+}
 </style>
