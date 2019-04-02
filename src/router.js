@@ -18,7 +18,7 @@ export default new Router({
       path: '/mais-acessadas',
       component: () => import(
         /* webpackChunkName: "MostAccessed" */
-        './pages/MostAccessed'
+        './pages/most-accessed/MostAccessed'
       )
     }
   ]

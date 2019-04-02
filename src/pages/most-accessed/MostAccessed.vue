@@ -1,16 +1,22 @@
 <template>
   <div class="most-accessed">
-    paginas mais acessadas
+    <card-box title="TOP 10 Páginas mais acessadas">
+      TOP 10
+    </card-box>
   </div>
 </template>
 
 <script>
+import CardBox from './CardBox'
 import countBy from 'lodash.countby'
 import orderBy from 'lodash.orderby'
 import { firebaseApp2 as Firebase } from '@/firebase'
 
 export default {
   name: 'MostAccessed',
+  components: {
+    CardBox
+  },
   data: () => ({
     items: []
   }),
@@ -43,7 +49,8 @@ export default {
 
 <style style="scss" scoped>
 .most-accessed {
-  height: 100vh;
-  background-color: #333;
+  padding: 15px;
+  height: calc(100vh - 30px);
+  background-color: #E7E7E7;
 }
 </style>
