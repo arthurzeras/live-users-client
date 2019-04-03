@@ -59,6 +59,10 @@ export default {
             plugins: [ChartDataLabels],
             options: {
               ...chartOptions,
+              scales: {
+                ...chartOptions.scales,
+                xAxes: [{ display: false }]
+              },
               plugins: {
                 datalabels: {
                   align: 'end',
