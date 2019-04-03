@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div style="text-align: center">
+    <div class="text-center">
       <h1 class="title">Kintegra live users</h1>
       <p class="subtitle">Usuários online no Kintegra neste momento</p>
     </div>
@@ -83,22 +83,16 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .title {
-    font-size: 25pt;
-  }
-
-  .subtitle {
-    font-size: 15pt;
+  .home {
+    .title { font-size: 25pt }
+    .subtitle { font-size: 15pt }
   }
 }
 
 @media (min-width: 1920px) {
-  .title {
-    font-size: 60pt;
-  }
-
-  .subtitle {
-    font-size: 30pt;
+  .home {
+    .title { font-size: 60pt }
+    .subtitle { font-size: 30pt }
   }
 }
 </style>
