@@ -59,6 +59,11 @@ export default {
             plugins: [ChartDataLabels],
             options: {
               ...chartOptions,
+              layout: {
+                padding: {
+                  right: 30
+                }
+              },
               scales: {
                 ...chartOptions.scales,
                 xAxes: [{ display: false }]
