@@ -28,7 +28,10 @@
           title="Frequência de uso (Horário)"
           :subtitle="frequencies.CLI.highest"
         >
-          <schedule type="CLI" :data="frequencies.CLI.totals"/>
+          <schedule
+            type="CLI"
+            :data="frequencies.CLI.totals || []"
+          />
         </card-box>
       </div>
       <div class="col-12 col-lg-6">
@@ -36,7 +39,10 @@
           title="Frequência de uso (Horário)"
           :subtitle="frequencies.CON.highest"
         >
-          <schedule type="CON" :data="frequencies.CON.totals"/>
+          <schedule
+            type="CON"
+            :data="frequencies.CON.totals || []"
+          />
         </card-box>
       </div>
     </div>
@@ -53,85 +59,73 @@ import Schedule from './charts/Schedule'
 import { firebaseApp2 as Firebase } from '@/firebase'
 
 export default {
-  name: 'MostAccessed',
+  name: 'Stats',
   components: {
     Top10,
     CardBox,
     Schedule
   },
   data: () => ({
-    items: []
+    chartTop10: {
+      CON: {},
+      CLI: {}
+    },
+    frequencies: {
+      CON: {},
+      CLI: {}
+    }
   }),
   created () {
     window.charts = {}
     this.getData()
   },
-  computed: {
-    pagesMostAccessed () {
-      const orderItems = type => {
-        const items = this.items.filter(i => i.tipo === type)
-        let counts = countBy(items, i => i.pagina)
-        counts = Object.keys(counts)
-          .filter(i => i !== '/logout')
-          .map(i => ({ page: i, total: counts[i] }))
-
-        return orderBy(counts, i => i.total, 'desc')
-      }
-
-      return {
-        CLI: orderItems('cliente'),
-        CON: orderItems('contabilidade')
-      }
-    },
-    frequencies () {
-      const createFrequency = type => {
-        const items = this.items.filter(i => i.tipo === type)
-        const counts = countBy(items, i => new Date(i.createdAt).getHours())
-        const totals = Array.from({ length: 24 }, (a, hour) => counts[hour] || 0)
-        let highest = orderBy(counts, i => i, 'desc')[0]
-
-        highest =
-          'A maior frequência foi entre ' +
-          `${totals.indexOf(highest)}:00 e ` +
-          `${totals.indexOf(highest) + 1}:00 ` +
-          `com um total de ${highest} acessos.`
-
-        return { totals, highest }
-      }
-
-      return {
-        CLI: createFrequency('cliente'),
-        CON: createFrequency('contabilidade')
-      }
-    },
-    chartTop10 () {
-      const filterItems = (type, param) => (
-        this.pagesMostAccessed[type]
-          .map(i => i[param])
-          .splice(0, 10)
-      )
-
-      return {
-        CLI: {
-          data: filterItems('CLI', 'total'),
-          labels: filterItems('CLI', 'page')
-        },
-        CON: {
-          data: filterItems('CON', 'total'),
-          labels: filterItems('CON', 'page')
-        }
-      }
-    }
-  },
   methods: {
     getData () {
       Firebase.database().ref().on('value', data => {
-        const items = data.val()
-        this.items = Object
+        let items = data.val()
+        items = Object
           .keys(items)
           .map(item => items[item])
           .filter(item => item.env === 'prod')
+
+        this.chartTop10.CLI = this.createTop10(items, 'cliente')
+        this.chartTop10.CON = this.createTop10(items, 'contabilidade')
+
+        this.frequencies.CLI = this.createFrequency(items, 'cliente')
+        this.frequencies.CON = this.createFrequency(items, 'contabilidade')
       })
+    },
+    createTop10 (items = [], type) {
+      const data = items.filter(i => i.tipo === type)
+      let counts = countBy(data, i => i.pagina)
+      counts = Object.keys(counts)
+        .filter(i => i !== '/logout')
+        .map(i => ({ page: i, total: counts[i] }))
+
+      const pagesMostAccessed = orderBy(counts, i => i.total, 'desc')
+
+      const filterItems = param => (
+        pagesMostAccessed.map(i => i[param]).splice(0, 10)
+      )
+
+      return {
+        data: filterItems('total'),
+        labels: filterItems('page')
+      }
+    },
+    createFrequency (items = [], type) {
+      const data = items.filter(i => i.tipo === type)
+      const counts = countBy(data, i => new Date(i.createdAt).getHours())
+      const totals = Array.from({ length: 24 }, (a, hour) => counts[hour] || 0)
+      let highest = orderBy(counts, i => i, 'desc')[0]
+
+      highest =
+        'A maior frequência é entre ' +
+        `${totals.indexOf(highest)}:00 e ` +
+        `${totals.indexOf(highest) + 1}:00 ` +
+        `com um total de ${highest} acessos.`
+
+      return { totals, highest }
     }
   }
 }
