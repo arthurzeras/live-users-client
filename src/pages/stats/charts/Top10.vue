@@ -61,7 +61,7 @@ export default {
               ...chartOptions,
               layout: {
                 padding: {
-                  right: 30
+                  right: 40
                 }
               },
               scales: {
