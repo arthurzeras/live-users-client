@@ -100,6 +100,7 @@ export default {
   },
   methods: {
     getData () {
+      Firebase.database().ref().off()
       Firebase.database().ref().on('value', data => {
         let items = data.val()
         items = Object
