@@ -96,10 +96,12 @@ export default {
       })
     },
     createTop10 (items = [], type) {
+      const ignored = ['/logout', '/painel/contador']
+
       const data = items.filter(i => i.tipo === type)
       let counts = countBy(data, i => i.pagina)
       counts = Object.keys(counts)
-        .filter(i => i !== '/logout')
+        .filter(i => !ignored.includes(i))
         .map(i => ({ page: i, total: counts[i] }))
 
       const pagesMostAccessed = orderBy(counts, i => i.total, 'desc')
