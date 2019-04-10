@@ -8,6 +8,7 @@
         class="form-control form-control-sm"
       >
         <option value="H">Hoje</option>
+        <option value="O">Ontem</option>
         <option value="S">Essa Semana</option>
         <option value="M">Esse Mês</option>
         <option value="G">Geral</option>
@@ -124,6 +125,8 @@ export default {
       switch (this.filter) {
         case 'H':
           return itemDate.isSame(moment(), 'day')
+        case 'O':
+          return itemDate.isSame(moment().subtract(1, 'd'), 'day')
         case 'S':
           return itemDate.isSame(moment(), 'week')
         case 'M':
