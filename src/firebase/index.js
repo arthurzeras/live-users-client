@@ -3,6 +3,7 @@ import 'firebase/auth'
 import 'firebase/database'
 
 const params = {
+  appId: process.env.VUE_APP_APP_ID,
   apiKey: process.env.VUE_APP_API_KEY,
   authDomain: process.env.VUE_APP_AUTH_DOMAIN,
   projectId: process.env.VUE_APP_PROJECT_ID,
