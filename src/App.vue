@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <header
-      class="header"
-      :class="$route.name === 'home' ? 'dark' : 'light'"
-    >
+    <header class="header">
       <router-link
         :key="route.name"
         class="header-link"
@@ -28,24 +25,13 @@ export default {
 <style scoped lang="scss">
   .header {
     display: flex;
-    &.light {
-      background-color: #FFF;
-      .header-link {
-        color: #555;
-        &:hover {
-          text-decoration: none;
-          background-color: #F2F2F2;
-        }
-      }
-    }
-    &.dark {
-      background-color: rgba(0, 0, 0, .5);
-      .header-link {
-        color: #FFF;
-        &:hover {
-          text-decoration: none;
-          background-color: rgba(0, 0, 0, .5);
-        }
+    background-color: rgba(0, 0, 0, .5);
+
+    .header-link {
+      color: #FFF;
+      &:hover {
+        text-decoration: none;
+        background-color: rgba(0, 0, 0, .5);
       }
     }
 
