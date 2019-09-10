@@ -1,7 +1,7 @@
 export const chartOptions = {
   legend: false,
   responsive: true,
-  maintainAspectRatio: false,
+  maintainAspectRatio: true,
   scales: {
     xAxes: [
       {

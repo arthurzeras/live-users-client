@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
+import 'firebase/functions'
 
 const params = {
   appId: process.env.VUE_APP_APP_ID,
