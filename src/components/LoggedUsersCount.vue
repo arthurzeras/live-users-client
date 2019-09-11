@@ -1,31 +1,34 @@
 <template>
   <div id="counter">
     <div class="sides">
-      <div class="number">{{ totalClientesLogged }}</div>
+      <div class="number" v-html="totalCliente"/>
       <div class="label">Cliente</div>
     </div>
-    <div class="total">
-      {{ totalClientesLogged + totalContabilidadesLogged }}
-    </div>
+    <div class="total" v-html="total"/>
     <div class="sides">
-      <div class="number">{{ totalContabilidadesLogged }}</div>
+      <div class="number" v-html="totalContador"/>
       <div class="label">Contabilidade</div>
     </div>
   </div>
 </template>
 
 <script>
+import { state, mutations } from '@/store'
+
 export default {
   name: 'LoggedUsersCount',
-  data: () => ({ list: [], lastAdded: null }),
+  data: () => ({ items: [], lastAdded: null }),
   created () {
     this.getData()
   },
   computed: {
-    totalClientesLogged () {
+    total () {
+      return state.total
+    },
+    totalCliente () {
       return this.getLength('cliente')
     },
-    totalContabilidadesLogged () {
+    totalContador () {
       return this.getLength('contador')
     }
   },
@@ -38,18 +41,21 @@ export default {
       })
 
       database.on('value', snapshot => {
-        this.list = snapshot.val() || []
+        this.items = snapshot.val() || []
         this.startTimeoutToDelete()
-        this.$emit('total', this.totalClientesLogged + this.totalContabilidadesLogged)
+
+        mutations.setTotal(this.totalCliente + this.totalContador)
       })
     },
     getLength (type) {
-      return Object.keys(this.list).filter(i => i.includes(type) && i.includes('prod')).length
+      return Object.keys(this.items)
+        .filter(i => i.includes(type) && i.includes('prod'))
+        .length
     },
     startTimeoutToDelete () {
       if (this.lastAdded) {
-        const idLastLogged = Object.keys(this.list)
-          .filter(k => this.list[k].createdAt === this.lastAdded.createdAt)
+        const idLastLogged = Object.keys(this.items)
+          .filter(k => this.items[k].createdAt === this.lastAdded.createdAt)
 
         setTimeout(() => {
           if (idLastLogged.length) {

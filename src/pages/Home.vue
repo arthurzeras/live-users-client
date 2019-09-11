@@ -1,12 +1,12 @@
 <template>
   <div class="home">
     <div class="text-center">
-      <h1 class="title">Kintegra live users</h1>
+      <h1 class="title">Kintegra Live Users</h1>
       <p class="subtitle">Usuários online no Kintegra neste momento</p>
     </div>
 
-    <logged-users-count @total="total = $event" />
-    <rocket :count="total"/>
+    <logged-users-count/>
+    <rocket/>
   </div>
 </template>
 
@@ -21,7 +21,6 @@ export default {
     LoggedUsersCount
   },
   data: () => ({
-    total: 0,
     collections: [
       406202, // https://unsplash.com/collections/406202/galaxy-af
       789734 // https://unsplash.com/collections/789734/abstract

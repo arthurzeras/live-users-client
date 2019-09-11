@@ -9,13 +9,9 @@
 </template>
 
 <script>
+import { state } from '@/store'
+
 export default {
-  props: {
-    count: {
-      default: 0,
-      type: Number
-    }
-  },
   data: () => ({ lastTen: 0, showRocket: false }),
   watch: {
     count () {
@@ -28,6 +24,11 @@ export default {
       if (nv) {
         setTimeout(() => { this.showRocket = false }, 9000)
       }
+    }
+  },
+  computed: {
+    count () {
+      return state.total
     }
   }
 }
