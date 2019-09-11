@@ -64,11 +64,11 @@ export default {
 <style scoped lang="scss">
 .home {
   width: 100%;
+  height: 100vh;
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  height: calc(100vh - 71px);
   background-color: rgba(0, 0, 0, .6);
   .title {
     margin: 0;
