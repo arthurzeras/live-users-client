@@ -16,18 +16,6 @@ export default new Router({
         /* webpackChunkName: "Home" */
         './pages/Home'
       )
-    },
-    {
-      name: 'stats',
-      path: '/estatisticas',
-      meta: {
-        title: 'Estatísticas',
-        icon: 'fa fa-chart-line'
-      },
-      component: () => import(
-        /* webpackChunkName: "Stats" */
-        './pages/stats/Stats'
-      )
     }
   ]
 })
