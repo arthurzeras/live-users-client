@@ -17,7 +17,7 @@ import { state, mutations } from '@/store'
 
 export default {
   name: 'LoggedUsersCount',
-  data: () => ({ items: [], lastAdded: null }),
+  data: () => ({ items: {} }),
   created () {
     this.getData()
   },
@@ -34,37 +34,14 @@ export default {
   },
   methods: {
     getData () {
-      const database = this.$firebase.database().ref()
-
-      database.on('child_added', snapshot => {
-        this.lastAdded = snapshot.val()
-      })
-
+      const database = this.$firebase.database().ref('liveusers')
       database.on('value', snapshot => {
-        this.items = snapshot.val() || []
-        this.startTimeoutToDelete()
-
+        this.items = snapshot.val().prod || {}
         mutations.setTotal(this.totalCliente + this.totalContador)
       })
     },
     getLength (type) {
-      return Object.keys(this.items)
-        .filter(i => i.includes(type) && i.includes('prod'))
-        .length
-    },
-    startTimeoutToDelete () {
-      if (this.lastAdded) {
-        const idLastLogged = Object.keys(this.items)
-          .filter(k => this.items[k].createdAt === this.lastAdded.createdAt)
-
-        setTimeout(() => {
-          if (idLastLogged.length) {
-            this.$firebase.database().ref(idLastLogged[0]).remove()
-          }
-
-          this.lastAdded = null
-        }, 7.2e+6)
-      }
+      return Object.keys(this.items[type] || {}).length
     }
   }
 }
