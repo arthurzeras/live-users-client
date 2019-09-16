@@ -1,9 +1,9 @@
 const admin = require('firebase-admin')
 const functions = require('firebase-functions')
 
-admin.initializeApp()
-
 exports.removeLoggedInfo = functions.https.onRequest(async (req, res) => {
+  admin.initializeApp()
+
   try {
     const { id, env, front } = req.query
 
@@ -22,3 +22,5 @@ exports.removeLoggedInfo = functions.https.onRequest(async (req, res) => {
     res.send({ error: error.toString() })
   }
 })
+
+exports.deleteOldLiveusers = functions.database.ref('/{any}').onCreate(s => s.ref.remove())
