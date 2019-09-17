@@ -1,26 +1,43 @@
 const admin = require('firebase-admin')
 const functions = require('firebase-functions')
 
-exports.removeLoggedInfo = functions.https.onRequest(async (req, res) => {
-  admin.initializeApp()
+admin.initializeApp()
 
-  try {
-    const { id, env, front } = req.query
+function formatDate (date) {
+  if (typeof date !== 'string') return date
 
-    if (!id || !env || !front) throw new Error('Informe o id, env e front')
+  date = date.split(' ')
+  day = date[0].split('/')
+  hour = date[1].split(':')
 
-    const ref = admin.database().ref(`liveusers/${env}/${front}/${id}`)
-    const snap = await ref.once('value')
+  return new Date(day[2], Number(day[1]) - 1, day[0], hour[0], hour[1], hour[2]).getTime()
+}
 
-    if (!snap.val()) throw new Error('Não há dados para os parâmetros informados')
+exports.removeLoggedInfo = functions.database.ref('/liveusers/prod/{front}/{userId}')
+  .onWrite((change, context) => {
+    if (!change.after.exists()) return null
 
-    ref.remove()
-    res.statusCode = 200
-    res.send({ message: 'Removido com sucesso!' })
-  } catch (error) {
-    res.statusCode = 500
-    res.send({ error: error.toString() })
-  }
-})
+    setTimeout(async () => {
+      const { userId, front } = context.params
+      const { createdAt } = change.after.val()
 
-exports.deleteOldLiveusers = functions.database.ref('/{any}').onCreate(s => s.ref.remove())
+      const snap = await admin.database()
+        .ref(`/liveusers/prod/${front}/${userId}`).once('value')
+
+      if (snap.val()) {
+        const { createdAt: currentCreatedAt } = snap.val()
+
+        if (formatDate(createdAt) - formatDate(currentCreatedAt) === 0) {
+          change.after.ref.remove()
+        }
+      }
+    }, 25000)
+
+    return Promise.resolve()
+  })
+
+exports.deleteOldLiveusers = functions.database.ref('/{any}')
+  .onCreate((snapshot, context) => !context.params.any.includes('liveusers')
+    ? snapshot.ref.remove()
+    : Promise.resolve()
+  )
